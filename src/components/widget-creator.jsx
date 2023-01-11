@@ -376,8 +376,6 @@ const WidgetCreator = ({instId, widgetId, minHeight='', minWidth=''}) => {
 	}
 
 	const onSaveCanceled = (msg) => {
-		console.log(msg)
-
 		if (msg != null && msg != undefined) {
 			if (msg.halt != null) {
 
