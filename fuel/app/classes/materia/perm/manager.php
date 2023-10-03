@@ -34,8 +34,8 @@ class Perm_Manager
 	 */
 	static public function is_super_user()
 	{
-		$login_hash = \Session::get('login_hash');
-		$key = 'is_super_user_'.$login_hash;
+		$user_id = \Model_User::find_current_id();
+		$key = 'is_super_user_'.$user_id;
 		$has_role = (\Fuel::$is_cli === true && ! \Fuel::$is_test) || \Session::get($key, false);
 
 		if ( ! $has_role)
@@ -49,12 +49,12 @@ class Perm_Manager
 	/**
 	 * Check if user is currently logged in as a support user
 	 *
-	 * @return boolean wheter or not the current user has the support role as defined by Perm_Role class
+	 * @return boolean whether or not the current user has the support role as defined by Perm_Role class
 	 */
 	static public function is_support_user(): bool
 	{
-		$login_hash = \Session::get('login_hash');
-		$key = 'is_support_user_'.$login_hash;
+		$user_id = \Model_User::find_current_id();
+		$key = 'is_support_user_'.$user_id;
 		$has_role = (\Fuel::$is_cli === true && ! \Fuel::$is_test) || \Session::get($key, false);
 
 		if ( ! $has_role)
@@ -360,6 +360,24 @@ class Perm_Manager
 					->where('user_id', $user_id)
 					->where('role_id', self::get_role_id($role_name))
 					->execute();
+
+				// support and super users have session keys that cache their status: need to manually remove them
+				switch ($role_name)
+				{
+					case 'support_user':
+						if (\Session::get('is_support_user_'.$user_id, false))
+						{
+							\Session::delete('is_support_user_'.$user_id);
+						}
+						break;
+
+					case 'super_user':
+						if (\Session::get('is_super_user'.$user_id, false))
+						{
+							\Session::delete('is_super_user'.$user_id);
+						}
+						break;
+				}
 			}
 		}
 		return $success;
