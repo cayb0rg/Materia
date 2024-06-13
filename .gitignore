@@ -126,3 +126,8 @@ public/dist/*
 **/__pycache__/**
 **/*.log
 app/materia/settings.py
+
+
+# Django files
+
+app/staticfiles/*

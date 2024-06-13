@@ -15,10 +15,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.urls import include, path
+from django.urls import include, path, re_path
+from django.shortcuts import render
 
 from core.views import main as core_views
 
+def render_react(request):
+    return render(request, 'index.html')
+
+app_name = 'materia'
 urlpatterns = [
-    path('', core_views.home, name='placeholder home page')
+    # path('', core_views.home, name='placeholder home page')
+    re_path(r'^$', render_react),
+    re_path(r'^(?:.*)/?$', render_react),
 ]

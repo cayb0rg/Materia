@@ -1,1 +1,1 @@
-docker-compose -f docker-compose.local.yml ${1:-up}
+docker-compose -f docker-compose.yml ${1:-up}
