@@ -21,11 +21,15 @@ from django.shortcuts import render
 from core.views import main as core_views
 
 def render_react(request):
-    return render(request, 'index.html')
+    return render(request, 'src/index.html')
+
+def render_catalog(request):
+    return render(request, 'src/catalog.html')
 
 app_name = 'materia'
 urlpatterns = [
     # path('', core_views.home, name='placeholder home page')
     re_path(r'^$', render_react),
     re_path(r'^(?:.*)/?$', render_react),
+    re_path(r'^widgets/', render_catalog),
 ]
